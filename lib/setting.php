@@ -6,7 +6,7 @@ class GitHookSettings {
 		add_action("admin_menu", [$this, "register_menus"]);
 	}
 
-	public function register_settings(): void {
+	public function register_settings() {
 		register_setting("githook", "githook_options");
 
 		add_settings_section("githook_config",
@@ -75,7 +75,7 @@ class GitHookSettings {
 		return file_get_contents($key_path);
 	}
 
-	private function generate_public_key(): void {
+	private function generate_public_key() {
 		$home = posix_getpwuid(posix_getuid());
 		$output_fp = sprintf("%s/.ssh/id_rsa", $home["dir"]);
 		$cmd = sprintf('ssh-keygen -f "%s" -N ""', $output_fp);
@@ -91,7 +91,7 @@ class GitHookSettings {
 		return $githook_secret;
 	}
 
-	public function render_settings_form(array $args = []): void {
+	public function render_settings_form(array $args = []) {
 		echo sprintf('<table class="form-table">
 			<tbody>
 				<tr>
@@ -114,13 +114,13 @@ class GitHookSettings {
 		</table>', get_bloginfo("wpurl"), $this->get_secret(), $this->get_public_key());
 	}
 
-	public function register_menus(): void {
+	public function register_menus() {
 		add_menu_page("GitHook", "GitHook Options", "manage_options", "githook",
 			[$this, "render_settings_html"]
 		);
 	}
 
-	public function render_settings_html(): void {
+	public function render_settings_html() {
 		if ( ! current_user_can("manage_options"))
 			return;
 

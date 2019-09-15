@@ -15,7 +15,7 @@ class WpHooks {
 	 * Executes the pull event if suitable.
 	 * @return void
 	 */
-	public function pull(): void {
+	public function pull() {
 		if (! $this->verify_request())
 			return;
 
