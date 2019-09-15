@@ -28,6 +28,6 @@ class WebHook {
 	}
 
 	public function execute(): bool {
-		require("../git-deploy.php");
+		require(dirname(__FILE__) . "/../git-deploy.php");
 	}
 }
