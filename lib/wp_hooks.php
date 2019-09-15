@@ -38,7 +38,12 @@ class WpHooks {
 		if (substr($base_uri, strlen($base_uri) -1, 1) == "/")
 			$base_uri = substr($base_uri, 0, strlen($base_uri) -1);
 
-		return ($base_uri == $this->hook_input_uri);
+		$parts = explode("/", $base_uri);
+		if (count($parts) < 2)
+			return false;
+
+		$tail = $parts[count($parts) -2] . "/" . $parts[count($parts) -1];
+		return ($tail == $this->hook_input_uri);
 	}
 }
 
