@@ -29,5 +29,6 @@ class WebHook {
 
 	public function execute(): bool {
 		require(dirname(__FILE__) . "/../git-deploy.php");
+		return true;
 	}
 }
