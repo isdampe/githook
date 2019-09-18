@@ -104,8 +104,8 @@ class WebHook {
 					$output = (! empty($output) ? implode("\n", $output) : "") . "\n";
 
 					if ($exit !== 0) {
-						$this->response(500, "=== ERROR: Pull failed in '%s' ===\n%s",
-							$this->repo_path, $output);
+						$this->response(500, sprintf("=== ERROR: Pull failed in '%s' ===\n%s",
+							$this->repo_path, $output));
 						return;
 					}
 
