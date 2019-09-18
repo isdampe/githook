@@ -8,7 +8,7 @@ class WebHook {
 	private $algo;
 
 	public function __construct(string $token, string $repository,
-	string $repo_path, string $branch) {
+		string $repo_path, string $branch) {
 
 		$this->token = $token;
 		$this->repository = $repository;
