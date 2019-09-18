@@ -60,25 +60,33 @@ class GitHookSettings {
 	}
 
 	public function get_public_key(bool $auto_tried = false): string {
-		$home = posix_getpwuid(posix_getuid());
-		$key_path = sprintf("%s/.ssh/id_rsa.pub", $home["dir"]);
-
-		if (! file_exists($key_path)) {
+		$deploy_key = get_option("githook_deploy_key");
+		if (! $deploy_key) {
 			if (! $auto_tried) {
 				$this->generate_public_key();
 				return $this->get_public_key(true);
 			} else {
-				return "Could not be automatically determined.";
+				return "";
 			}
 		}
 
-		return file_get_contents($key_path);
+		return $deploy_key;
 	}
 
 	private function generate_public_key() {
-		$home = posix_getpwuid(posix_getuid());
-		$output_fp = sprintf("%s/.ssh/id_rsa", $home["dir"]);
+		$output_fp = sprintf("/tmp/%s", uniqid());
+		$output_file = sprintf("%s.pub", $output_fp);
 		$cmd = sprintf('ssh-keygen -f "%s" -N ""', $output_fp);
+		$bash_out = shell_exec($cmd);
+		if (file_exists($output_file)) {
+			$key = file_get_contents($output_file);
+			update_option("githook_deploy_key", $key);
+
+			unlink($output_file);
+			return $key;
+		}
+
+		return null;
 	}
 
 	public function get_secret(): string {
